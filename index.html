@@ -1,0 +1,1842 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sistema de Gestión Institucional — I.E. JEC Simón Bolívar</title>
+<link rel="stylesheet" href="css/estilos.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<!-- Librerías: gráficos, lectura de Word/Excel y generación de PDF -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body>
+
+<!-- ===================== HEADER ===================== -->
+<header id="main-header" style="display:none;">
+    <div class="header-content">
+        <div class="logo-container">
+            <img id="institution-logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgMjAwIiB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnRyIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNhNTNhNTQiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSI1NSUiIHN0b3AtY29sb3I9IiM4MDAwMjAiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjNGQwMDEzIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJyaW5nRyIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNmMGQ5YTgiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjYzlhMDVhIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogICAgPHBhdGggaWQ9ImFyY1RvcCIgZD0iTSAyNiAxMDggQSA3NCA3NCAwIDAgMSAxNzQgMTA4Ii8+CiAgICA8cGF0aCBpZD0iYXJjQm90dG9tIiBkPSJNIDQwIDE0OCBBIDY2IDY2IDAgMCAwIDE2MCAxNDgiLz4KICA8L2RlZnM+CgogIDxjaXJjbGUgY3g9IjEwMCIgY3k9IjEwMCIgcj0iOTciIGZpbGw9InVybCgjYmdHKSIvPgogIDxjaXJjbGUgY3g9IjEwMCIgY3k9IjEwMCIgcj0iOTciIGZpbGw9Im5vbmUiIHN0cm9rZT0idXJsKCNyaW5nRykiIHN0cm9rZS13aWR0aD0iNCIvPgogIDxjaXJjbGUgY3g9IjEwMCIgY3k9IjEwMCIgcj0iODYiIGZpbGw9Im5vbmUiIHN0cm9rZT0idXJsKCNyaW5nRykiIHN0cm9rZS13aWR0aD0iMS41IiBvcGFjaXR5PSIwLjc1Ii8+CgogIDwhLS0gTGF1cmVsIGJyYW5jaCAtIGxlZnQgLS0+CiAgPGcgZmlsbD0idXJsKCNyaW5nRykiIG9wYWNpdHk9IjAuOTUiPgogICAgPGVsbGlwc2UgY3g9IjQyIiBjeT0iMTUwIiByeD0iOSIgcnk9IjQuMiIgdHJhbnNmb3JtPSJyb3RhdGUoLTM1IDQyIDE1MCkiLz4KICAgIDxlbGxpcHNlIGN4PSIzNiIgY3k9IjEzOSIgcng9IjkiIHJ5PSI0LjIiIHRyYW5zZm9ybT0icm90YXRlKC01MCAzNiAxMzkpIi8+CiAgICA8ZWxsaXBzZSBjeD0iMzIiIGN5PSIxMjYiIHJ4PSI5IiByeT0iNC4yIiB0cmFuc2Zvcm09InJvdGF0ZSgtNjUgMzIgMTI2KSIvPgogICAgPGVsbGlwc2UgY3g9IjMwIiBjeT0iMTEyIiByeD0iOSIgcnk9IjQuMiIgdHJhbnNmb3JtPSJyb3RhdGUoLTgwIDMwIDExMikiLz4KICAgIDxlbGxpcHNlIGN4PSIzMSIgY3k9Ijk4IiAgcng9IjkiIHJ5PSI0LjIiIHRyYW5zZm9ybT0icm90YXRlKC05NSAzMSA5OCkiLz4KICAgIDxwYXRoIGQ9Ik00NiAxNTggUTMwIDEzMCAzMyA5MiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ1cmwoI3JpbmdHKSIgc3Ryb2tlLXdpZHRoPSIyLjIiLz4KICA8L2c+CiAgPCEtLSBMYXVyZWwgYnJhbmNoIC0gcmlnaHQgKG1pcnJvcmVkKSAtLT4KICA8ZyBmaWxsPSJ1cmwoI3JpbmdHKSIgb3BhY2l0eT0iMC45NSI+CiAgICA8ZWxsaXBzZSBjeD0iMTU4IiBjeT0iMTUwIiByeD0iOSIgcnk9IjQuMiIgdHJhbnNmb3JtPSJyb3RhdGUoMzUgMTU4IDE1MCkiLz4KICAgIDxlbGxpcHNlIGN4PSIxNjQiIGN5PSIxMzkiIHJ4PSI5IiByeT0iNC4yIiB0cmFuc2Zvcm09InJvdGF0ZSg1MCAxNjQgMTM5KSIvPgogICAgPGVsbGlwc2UgY3g9IjE2OCIgY3k9IjEyNiIgcng9IjkiIHJ5PSI0LjIiIHRyYW5zZm9ybT0icm90YXRlKDY1IDE2OCAxMjYpIi8+CiAgICA8ZWxsaXBzZSBjeD0iMTcwIiBjeT0iMTEyIiByeD0iOSIgcnk9IjQuMiIgdHJhbnNmb3JtPSJyb3RhdGUoODAgMTcwIDExMikiLz4KICAgIDxlbGxpcHNlIGN4PSIxNjkiIGN5PSI5OCIgIHJ4PSI5IiByeT0iNC4yIiB0cmFuc2Zvcm09InJvdGF0ZSg5NSAxNjkgOTgpIi8+CiAgICA8cGF0aCBkPSJNMTU0IDE1OCBRMTcwIDEzMCAxNjcgOTIiIGZpbGw9Im5vbmUiIHN0cm9rZT0idXJsKCNyaW5nRykiIHN0cm9rZS13aWR0aD0iMi4yIi8+CiAgPC9nPgoKICA8IS0tIEFyY2hlZCBpbnN0aXR1dGlvbiB0ZXh0IC0tPgogIDx0ZXh0IGZvbnQtZmFtaWx5PSInSW50ZXIgVGlnaHQnLCdJbnRlcicsLWFwcGxlLXN5c3RlbSxzYW5zLXNlcmlmIiBmb250LXNpemU9IjE0IiBmb250LXdlaWdodD0iODAwIiBmaWxsPSIjZmZmZmZmIiBsZXR0ZXItc3BhY2luZz0iMi41Ij4KICAgIDx0ZXh0UGF0aCBocmVmPSIjYXJjVG9wIiBzdGFydE9mZnNldD0iNTAlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5JLkUuIEpFQzwvdGV4dFBhdGg+CiAgPC90ZXh0PgogIDx0ZXh0IGZvbnQtZmFtaWx5PSInSW50ZXIgVGlnaHQnLCdJbnRlcicsLWFwcGxlLXN5c3RlbSxzYW5zLXNlcmlmIiBmb250LXNpemU9IjExLjUiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiNmNWU2YzgiIGxldHRlci1zcGFjaW5nPSIxLjQiPgogICAgPHRleHRQYXRoIGhyZWY9IiNhcmNCb3R0b20iIHN0YXJ0T2Zmc2V0PSI1MCUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPlNJTcOTTiBCT0zDjVZBUjwvdGV4dFBhdGg+CiAgPC90ZXh0PgoKICA8IS0tIE9wZW4gYm9vayAtLT4KICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMDAsMTEyKSI+CiAgICA8cGF0aCBkPSJNLTM0LC0xMCBRLTM0LC0yNCAtMywtMTkgTC0zLDIyIFEtMzQsMTggLTM0LDMgWiIgZmlsbD0iI2ZmZmZmZiIvPgogICAgPHBhdGggZD0iTTM0LC0xMCBRMzQsLTI0IDMsLTE5IEwzLDIyIFEzNCwxOCAzNCwzIFoiIGZpbGw9IiNmZmZmZmYiLz4KICAgIDxwYXRoIGQ9Ik0tMjgsLTEzIFEtMjgsLTE5IC02LC0xNSIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYzlhMDVhIiBzdHJva2Utd2lkdGg9IjEuNCIgb3BhY2l0eT0iMC43Ii8+CiAgICA8cGF0aCBkPSJNLTI4LC02IFEtMjgsLTExIC02LC04IiBmaWxsPSJub25lIiBzdHJva2U9IiNjOWEwNWEiIHN0cm9rZS13aWR0aD0iMS40IiBvcGFjaXR5PSIwLjciLz4KICAgIDxwYXRoIGQ9Ik0yOCwtMTMgUTI4LC0xOSA2LC0xNSIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYzlhMDVhIiBzdHJva2Utd2lkdGg9IjEuNCIgb3BhY2l0eT0iMC43Ii8+CiAgICA8cGF0aCBkPSJNMjgsLTYgUTI4LC0xMSA2LC04IiBmaWxsPSJub25lIiBzdHJva2U9IiNjOWEwNWEiIHN0cm9rZS13aWR0aD0iMS40IiBvcGFjaXR5PSIwLjciLz4KICAgIDxsaW5lIHgxPSIwIiB5MT0iLTE5LjUiIHgyPSIwIiB5Mj0iMjIiIHN0cm9rZT0iI2M5YTA1YSIgc3Ryb2tlLXdpZHRoPSIyIi8+CiAgPC9nPgoKICA8IS0tIFN0YXIgYWJvdmUgdGhlIGJvb2sgLS0+CiAgPHBhdGggZmlsbD0idXJsKCNyaW5nRykiIGQ9Ik0xMDAsNTAgTDEwNC41LDYxLjUgMTE3LDYyLjUgMTA3LjUsNzAuNSAxMTAuNSw4Mi41IDEwMCw3NS41IDg5LjUsODIuNSA5Mi41LDcwLjUgODMsNjIuNSA5NS41LDYxLjUgWiIvPgoKICA8IS0tIFllYXIgLS0+CiAgPHRleHQgeD0iMTAwIiB5PSIxNzYiIGZvbnQtZmFtaWx5PSInSW50ZXIgVGlnaHQnLCdJbnRlcicsLWFwcGxlLXN5c3RlbSxzYW5zLXNlcmlmIiBmb250LXNpemU9IjExIiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjZjVlNmM4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBsZXR0ZXItc3BhY2luZz0iMSI+MjAyNjwvdGV4dD4KPC9zdmc+Cg==" alt="Logo">
+            <div class="institution-info">
+                <h1 id="institution-name">I.E. JEC Simón Bolívar</h1>
+                <p>Sistema de Gestión Institucional · <span id="header-anio">2026</span></p>
+            </div>
+        </div>
+        <div class="header-actions">
+            <button class="btn-icon" id="theme-toggle" title="Cambiar tema">
+                <i class="fas fa-moon"></i>
+            </button>
+            <button class="btn btn-secondary" id="user-menu-btn">
+                <i class="fas fa-user"></i>
+                <span id="current-user-name">Usuario</span>
+            </button>
+            <button class="btn-icon" id="logout-btn" title="Cerrar sesión">
+                <i class="fas fa-arrow-right-from-bracket"></i>
+            </button>
+        </div>
+    </div>
+</header>
+
+<!-- ===================== LOGIN ===================== -->
+<div id="login-screen" class="login-container">
+    <div class="login-card fade-in">
+        <div class="login-logo">
+            <img id="login-logo-img" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgMjAwIiB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnRyIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNhNTNhNTQiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSI1NSUiIHN0b3AtY29sb3I9IiM4MDAwMjAiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjNGQwMDEzIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJyaW5nRyIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNmMGQ5YTgiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjYzlhMDVhIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogICAgPHBhdGggaWQ9ImFyY1RvcCIgZD0iTSAyNiAxMDggQSA3NCA3NCAwIDAgMSAxNzQgMTA4Ii8+CiAgICA8cGF0aCBpZD0iYXJjQm90dG9tIiBkPSJNIDQwIDE0OCBBIDY2IDY2IDAgMCAwIDE2MCAxNDgiLz4KICA8L2RlZnM+CgogIDxjaXJjbGUgY3g9IjEwMCIgY3k9IjEwMCIgcj0iOTciIGZpbGw9InVybCgjYmdHKSIvPgogIDxjaXJjbGUgY3g9IjEwMCIgY3k9IjEwMCIgcj0iOTciIGZpbGw9Im5vbmUiIHN0cm9rZT0idXJsKCNyaW5nRykiIHN0cm9rZS13aWR0aD0iNCIvPgogIDxjaXJjbGUgY3g9IjEwMCIgY3k9IjEwMCIgcj0iODYiIGZpbGw9Im5vbmUiIHN0cm9rZT0idXJsKCNyaW5nRykiIHN0cm9rZS13aWR0aD0iMS41IiBvcGFjaXR5PSIwLjc1Ii8+CgogIDwhLS0gTGF1cmVsIGJyYW5jaCAtIGxlZnQgLS0+CiAgPGcgZmlsbD0idXJsKCNyaW5nRykiIG9wYWNpdHk9IjAuOTUiPgogICAgPGVsbGlwc2UgY3g9IjQyIiBjeT0iMTUwIiByeD0iOSIgcnk9IjQuMiIgdHJhbnNmb3JtPSJyb3RhdGUoLTM1IDQyIDE1MCkiLz4KICAgIDxlbGxpcHNlIGN4PSIzNiIgY3k9IjEzOSIgcng9IjkiIHJ5PSI0LjIiIHRyYW5zZm9ybT0icm90YXRlKC01MCAzNiAxMzkpIi8+CiAgICA8ZWxsaXBzZSBjeD0iMzIiIGN5PSIxMjYiIHJ4PSI5IiByeT0iNC4yIiB0cmFuc2Zvcm09InJvdGF0ZSgtNjUgMzIgMTI2KSIvPgogICAgPGVsbGlwc2UgY3g9IjMwIiBjeT0iMTEyIiByeD0iOSIgcnk9IjQuMiIgdHJhbnNmb3JtPSJyb3RhdGUoLTgwIDMwIDExMikiLz4KICAgIDxlbGxpcHNlIGN4PSIzMSIgY3k9Ijk4IiAgcng9IjkiIHJ5PSI0LjIiIHRyYW5zZm9ybT0icm90YXRlKC05NSAzMSA5OCkiLz4KICAgIDxwYXRoIGQ9Ik00NiAxNTggUTMwIDEzMCAzMyA5MiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ1cmwoI3JpbmdHKSIgc3Ryb2tlLXdpZHRoPSIyLjIiLz4KICA8L2c+CiAgPCEtLSBMYXVyZWwgYnJhbmNoIC0gcmlnaHQgKG1pcnJvcmVkKSAtLT4KICA8ZyBmaWxsPSJ1cmwoI3JpbmdHKSIgb3BhY2l0eT0iMC45NSI+CiAgICA8ZWxsaXBzZSBjeD0iMTU4IiBjeT0iMTUwIiByeD0iOSIgcnk9IjQuMiIgdHJhbnNmb3JtPSJyb3RhdGUoMzUgMTU4IDE1MCkiLz4KICAgIDxlbGxpcHNlIGN4PSIxNjQiIGN5PSIxMzkiIHJ4PSI5IiByeT0iNC4yIiB0cmFuc2Zvcm09InJvdGF0ZSg1MCAxNjQgMTM5KSIvPgogICAgPGVsbGlwc2UgY3g9IjE2OCIgY3k9IjEyNiIgcng9IjkiIHJ5PSI0LjIiIHRyYW5zZm9ybT0icm90YXRlKDY1IDE2OCAxMjYpIi8+CiAgICA8ZWxsaXBzZSBjeD0iMTcwIiBjeT0iMTEyIiByeD0iOSIgcnk9IjQuMiIgdHJhbnNmb3JtPSJyb3RhdGUoODAgMTcwIDExMikiLz4KICAgIDxlbGxpcHNlIGN4PSIxNjkiIGN5PSI5OCIgIHJ4PSI5IiByeT0iNC4yIiB0cmFuc2Zvcm09InJvdGF0ZSg5NSAxNjkgOTgpIi8+CiAgICA8cGF0aCBkPSJNMTU0IDE1OCBRMTcwIDEzMCAxNjcgOTIiIGZpbGw9Im5vbmUiIHN0cm9rZT0idXJsKCNyaW5nRykiIHN0cm9rZS13aWR0aD0iMi4yIi8+CiAgPC9nPgoKICA8IS0tIEFyY2hlZCBpbnN0aXR1dGlvbiB0ZXh0IC0tPgogIDx0ZXh0IGZvbnQtZmFtaWx5PSInSW50ZXIgVGlnaHQnLCdJbnRlcicsLWFwcGxlLXN5c3RlbSxzYW5zLXNlcmlmIiBmb250LXNpemU9IjE0IiBmb250LXdlaWdodD0iODAwIiBmaWxsPSIjZmZmZmZmIiBsZXR0ZXItc3BhY2luZz0iMi41Ij4KICAgIDx0ZXh0UGF0aCBocmVmPSIjYXJjVG9wIiBzdGFydE9mZnNldD0iNTAlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5JLkUuIEpFQzwvdGV4dFBhdGg+CiAgPC90ZXh0PgogIDx0ZXh0IGZvbnQtZmFtaWx5PSInSW50ZXIgVGlnaHQnLCdJbnRlcicsLWFwcGxlLXN5c3RlbSxzYW5zLXNlcmlmIiBmb250LXNpemU9IjExLjUiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiNmNWU2YzgiIGxldHRlci1zcGFjaW5nPSIxLjQiPgogICAgPHRleHRQYXRoIGhyZWY9IiNhcmNCb3R0b20iIHN0YXJ0T2Zmc2V0PSI1MCUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPlNJTcOTTiBCT0zDjVZBUjwvdGV4dFBhdGg+CiAgPC90ZXh0PgoKICA8IS0tIE9wZW4gYm9vayAtLT4KICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMDAsMTEyKSI+CiAgICA8cGF0aCBkPSJNLTM0LC0xMCBRLTM0LC0yNCAtMywtMTkgTC0zLDIyIFEtMzQsMTggLTM0LDMgWiIgZmlsbD0iI2ZmZmZmZiIvPgogICAgPHBhdGggZD0iTTM0LC0xMCBRMzQsLTI0IDMsLTE5IEwzLDIyIFEzNCwxOCAzNCwzIFoiIGZpbGw9IiNmZmZmZmYiLz4KICAgIDxwYXRoIGQ9Ik0tMjgsLTEzIFEtMjgsLTE5IC02LC0xNSIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYzlhMDVhIiBzdHJva2Utd2lkdGg9IjEuNCIgb3BhY2l0eT0iMC43Ii8+CiAgICA8cGF0aCBkPSJNLTI4LC02IFEtMjgsLTExIC02LC04IiBmaWxsPSJub25lIiBzdHJva2U9IiNjOWEwNWEiIHN0cm9rZS13aWR0aD0iMS40IiBvcGFjaXR5PSIwLjciLz4KICAgIDxwYXRoIGQ9Ik0yOCwtMTMgUTI4LC0xOSA2LC0xNSIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYzlhMDVhIiBzdHJva2Utd2lkdGg9IjEuNCIgb3BhY2l0eT0iMC43Ii8+CiAgICA8cGF0aCBkPSJNMjgsLTYgUTI4LC0xMSA2LC04IiBmaWxsPSJub25lIiBzdHJva2U9IiNjOWEwNWEiIHN0cm9rZS13aWR0aD0iMS40IiBvcGFjaXR5PSIwLjciLz4KICAgIDxsaW5lIHgxPSIwIiB5MT0iLTE5LjUiIHgyPSIwIiB5Mj0iMjIiIHN0cm9rZT0iI2M5YTA1YSIgc3Ryb2tlLXdpZHRoPSIyIi8+CiAgPC9nPgoKICA8IS0tIFN0YXIgYWJvdmUgdGhlIGJvb2sgLS0+CiAgPHBhdGggZmlsbD0idXJsKCNyaW5nRykiIGQ9Ik0xMDAsNTAgTDEwNC41LDYxLjUgMTE3LDYyLjUgMTA3LjUsNzAuNSAxMTAuNSw4Mi41IDEwMCw3NS41IDg5LjUsODIuNSA5Mi41LDcwLjUgODMsNjIuNSA5NS41LDYxLjUgWiIvPgoKICA8IS0tIFllYXIgLS0+CiAgPHRleHQgeD0iMTAwIiB5PSIxNzYiIGZvbnQtZmFtaWx5PSInSW50ZXIgVGlnaHQnLCdJbnRlcicsLWFwcGxlLXN5c3RlbSxzYW5zLXNlcmlmIiBmb250LXNpemU9IjExIiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjZjVlNmM4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBsZXR0ZXItc3BhY2luZz0iMSI+MjAyNjwvdGV4dD4KPC9zdmc+Cg==" alt="Logo Institución">
+        </div>
+        <h2>Bienvenido</h2>
+        <p class="login-subtitle" id="login-institution-name">I.E. JEC Simón Bolívar</p>
+        <form id="login-form">
+            <div class="form-group">
+                <label for="login-dni">DNI</label>
+                <input type="text" id="login-dni" class="form-control" placeholder="Ingresa tu número de DNI" required autocomplete="username" inputmode="numeric" maxlength="15">
+            </div>
+            <div id="login-error" class="alert alert-danger" style="display:none;"></div>
+            <button type="submit" class="btn btn-primary btn-block">
+                <i class="fas fa-arrow-right-to-bracket"></i> Ingresar
+            </button>
+        </form>
+        <form id="soporte-login-form" style="display:none;">
+            <div class="form-group">
+                <label for="soporte-username">Usuario</label>
+                <input type="text" id="soporte-username" class="form-control" placeholder="Soporte" autocomplete="username">
+            </div>
+            <div class="form-group">
+                <label for="soporte-password">Contraseña</label>
+                <input type="password" id="soporte-password" class="form-control" placeholder="Contraseña" autocomplete="current-password">
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">
+                <i class="fas fa-arrow-right-to-bracket"></i> Ingresar como Soporte
+            </button>
+        </form>
+        <button type="button" class="btn-link-soporte" id="toggle-soporte-login"><i class="fas fa-user-gear"></i> Acceso Soporte Técnico</button>
+        <p class="login-hint">Acceso exclusivo para Dirección, Subdirección, Coordinadores y Soporte Técnico.<br>Ingresa con tu número de DNI: es tu usuario y tu contraseña a la vez.</p>
+    </div>
+</div>
+
+<!-- ===================== APP ===================== -->
+<main id="main-content" style="display:none;" class="container">
+
+    <div class="user-profile fade-in">
+        <img id="user-avatar" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImF2QmciIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjRURFQUVDIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI0RDRDdEQSIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHJlY3Qgd2lkdGg9IjEwMCIgaGVpZ2h0PSIxMDAiIHJ4PSIyMiIgZmlsbD0idXJsKCNhdkJnKSIvPgogIDxjaXJjbGUgY3g9IjUwIiBjeT0iMzkiIHI9IjE3IiBmaWxsPSIjQjlCMkI2Ii8+CiAgPHBhdGggZD0iTTE2IDkwIFE1MCA2MCA4NCA5MCBMODQgMTAwIEwxNiAxMDAgWiIgZmlsbD0iI0I5QjJCNiIvPgo8L3N2Zz4K" alt="Avatar" class="user-avatar">
+        <div class="user-info">
+            <h3 id="user-name-display">Nombre del usuario</h3>
+            <p id="user-role-display">Rol</p>
+        </div>
+        <div class="user-actions">
+            <button class="btn btn-secondary btn-sm" id="change-password-btn"><i class="fas fa-key"></i> Contraseña</button>
+            <button class="btn btn-secondary btn-sm" id="upload-photo-btn"><i class="fas fa-camera"></i> Foto</button>
+        </div>
+    </div>
+
+    <!-- Nav móvil -->
+    <div class="nav-tabs-mobile" id="nav-tabs-mobile"></div>
+
+    <div class="app-layout">
+        <nav class="sidebar" id="sidebar"></nav>
+        <div class="main-panel">
+            <div id="tab-content"></div>
+        </div>
+    </div>
+</main>
+
+<!-- ===================== MODAL: CAMBIAR CONTRASEÑA ===================== -->
+<div id="password-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Cambiar contraseña</h3>
+            <button class="modal-close" data-close="password-modal">&times;</button>
+        </div>
+        <form id="change-password-form">
+            <div class="form-group">
+                <label>Contraseña actual</label>
+                <input type="password" id="current-password" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label>Nueva contraseña</label>
+                <input type="password" id="new-password" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label>Confirmar nueva contraseña</label>
+                <input type="password" id="confirm-password" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block"><i class="fas fa-save"></i> Guardar cambios</button>
+        </form>
+    </div>
+</div>
+
+<!-- ===================== MODAL: FOTO DE PERFIL ===================== -->
+<div id="photo-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Foto de perfil</h3>
+            <button class="modal-close" data-close="photo-modal">&times;</button>
+        </div>
+        <form id="upload-photo-form">
+            <div class="form-group">
+                <label>Selecciona una imagen</label>
+                <input type="file" id="photo-input" class="form-control" accept="image/*" required>
+            </div>
+            <div id="photo-preview" class="text-center mt-12" style="display:none;">
+                <img id="preview-image" src="" alt="Vista previa" style="max-width:140px;border-radius:20px;">
+            </div>
+            <button type="submit" class="btn btn-primary btn-block mt-20"><i class="fas fa-upload"></i> Guardar foto</button>
+        </form>
+    </div>
+</div>
+
+<!-- ===================== MODAL: EVALUACIÓN ===================== -->
+<div id="evaluation-modal" class="modal">
+    <div class="modal-content modal-wide">
+        <div class="modal-header">
+            <h3 id="evaluation-title">Evaluación de desempeño</h3>
+            <button class="modal-close" data-close="evaluation-modal">&times;</button>
+        </div>
+        <form id="evaluation-form">
+            <div id="evaluation-criterios"></div>
+            <div class="form-group">
+                <label>Observaciones / recomendaciones</label>
+                <textarea id="evaluation-comentario" class="form-control" placeholder="Escribe una observación (opcional)"></textarea>
+            </div>
+            <div class="flex" style="justify-content:space-between;align-items:center;">
+                <div>
+                    <span class="text-muted" style="font-size:0.8rem;">Puntaje total</span>
+                    <div id="evaluation-total" style="font-size:1.8rem;font-weight:800;color:var(--guinda);font-family:var(--font-display);">0 / 100</div>
+                </div>
+                <button type="submit" class="btn btn-primary"><i class="fas fa-check"></i> Guardar evaluación</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ===================== MODAL: REPORTE ===================== -->
+<div id="report-modal" class="modal">
+    <div class="modal-content modal-wide">
+        <div class="modal-header">
+            <h3>Reporte de evaluación</h3>
+            <div class="flex gap-8">
+                <button class="btn btn-secondary btn-sm" id="download-report-btn"><i class="fas fa-file-pdf"></i> Descargar PDF</button>
+                <button class="modal-close" data-close="report-modal">&times;</button>
+            </div>
+        </div>
+        <div id="print-area"><div id="report-body"></div></div>
+    </div>
+</div>
+
+<!-- ===================== MODAL: FORMULARIO 1 ===================== -->
+<div id="form1-modal" class="modal">
+    <div class="modal-content modal-wide">
+        <div class="modal-header">
+            <h3 id="form1-title">Formulario 1</h3>
+            <button class="modal-close" data-close="form1-modal">&times;</button>
+        </div>
+        <form id="form1-form">
+            <div id="form1-preguntas"></div>
+            <div id="form1-error" class="alert alert-danger" style="display:none;"></div>
+            <div class="flex" style="justify-content:flex-end;align-items:center;gap:10px;margin-top:20px;">
+                <button type="button" class="btn btn-secondary" id="form1-guardar-borrador"><i class="fas fa-floppy-disk"></i> Guardar borrador</button>
+                <button type="submit" class="btn btn-primary"><i class="fas fa-check-double"></i> Guardar y finalizar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ===================== MODAL: FORMULARIO 2 ===================== -->
+<div id="form2-modal" class="modal">
+    <div class="modal-content modal-wide">
+        <div class="modal-header">
+            <h3 id="form2-title">Formulario 2</h3>
+            <button class="modal-close" data-close="form2-modal">&times;</button>
+        </div>
+        <form id="form2-form">
+            <div id="form2-grupos"></div>
+            <div id="form2-error" class="alert alert-danger" style="display:none;"></div>
+            <div class="flex" style="justify-content:flex-end;align-items:center;gap:10px;margin-top:20px;">
+                <button type="button" class="btn btn-secondary" id="form2-guardar-borrador"><i class="fas fa-floppy-disk"></i> Guardar borrador</button>
+                <button type="submit" class="btn btn-primary"><i class="fas fa-check-double"></i> Guardar y finalizar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ===================== MODAL: SUBIR PLANTILLA ===================== -->
+<div id="template-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Subir formulario de evaluación</h3>
+            <button class="modal-close" data-close="template-modal">&times;</button>
+        </div>
+        <form id="template-form">
+            <div class="form-group">
+                <label>Área / coordinación destino</label>
+                <select id="template-area" class="form-control" required></select>
+            </div>
+            <div class="form-group">
+                <label>Archivo (Word .docx o Excel .xlsx / .csv)</label>
+                <div class="dropzone" id="template-dropzone">
+                    <i class="fas fa-cloud-arrow-up"></i>
+                    <p><strong>Haz clic para elegir</strong> o arrastra tu archivo aquí</p>
+                    <p style="margin-top:4px;">Cada línea o fila será un criterio de evaluación</p>
+                </div>
+                <input type="file" id="template-input" accept=".docx,.xlsx,.xls,.csv" style="display:none;" required>
+                <div id="template-file-chip"></div>
+            </div>
+            <div id="template-preview"></div>
+            <button type="submit" class="btn btn-primary btn-block mt-20" id="template-submit-btn" disabled><i class="fas fa-upload"></i> Guardar formulario</button>
+        </form>
+    </div>
+</div>
+
+<!-- ===================== DATOS EMBEBIDOS ===================== -->
+<script id="personal-data-script" type="application/json">
+[
+  {
+    "numero": 1,
+    "nombre_completo": "TIPIAN LEVANO, VILMA ROSARIO",
+    "sexo": "F",
+    "dni": "21814585",
+    "fecha_nacimiento": "1969-10-11 00:00:00",
+    "edad": 57,
+    "celular": "987327085",
+    "email": "rosariotilev@gmail.com",
+    "cargo": "DIRECTORA",
+    "area": "",
+    "jornada": "40",
+    "condicion": "DESIGNADA",
+    "escala": "VI",
+    "anos_servicio": "26",
+    "direccion": "AV. Rosedal",
+    "seccion": "DIRECCION",
+    "rol": "direccion",
+    "usuario": "VILMA TIPIAN LEVANO",
+    "contrasena": "21814585",
+    "activo": true,
+    "foto": null,
+    "area_codigo": ""
+  },
+  {
+    "numero": 2,
+    "nombre_completo": "RAMON BAUTISTA, MIRIAN JAKELYN",
+    "sexo": "F",
+    "dni": "42506694",
+    "fecha_nacimiento": "1984-05-29 00:00:00",
+    "edad": 42,
+    "celular": "941497586",
+    "email": "mirianrb2@gmail.com",
+    "cargo": "SUBDIRECTORA",
+    "area": "",
+    "jornada": "40",
+    "condicion": "DESIGNADA",
+    "escala": "IV",
+    "anos_servicio": "",
+    "direccion": "AV. Grocio Prado N° 977 - Pueblo Nuevo",
+    "seccion": "DIRECCION",
+    "rol": "subdireccion",
+    "usuario": "MIRIAN RAMON BAUTISTA",
+    "contrasena": "42506694",
+    "activo": true,
+    "foto": null,
+    "area_codigo": ""
+  },
+  {
+    "numero": 1,
+    "nombre_completo": "NAPA MESIAS, GABRIEL",
+    "sexo": "M",
+    "dni": "21850467",
+    "fecha_nacimiento": "1965-04-24 00:00:00",
+    "edad": 61,
+    "celular": "924210629",
+    "email": "gnapa62@gmail.com",
+    "cargo": "COORD. PEDAGÓGICO DE CC.SS",
+    "area": "CCSS / DPCC / RELIGION",
+    "jornada": "32",
+    "condicion": "NOMBRADO",
+    "escala": "I",
+    "anos_servicio": "21",
+    "direccion": "Av. San Pedro de Pilpa 630 - Sunampe",
+    "seccion": "COORDINADORES",
+    "rol": "coordinador_ccss",
+    "usuario": "GABRIEL NAPA MESIAS",
+    "contrasena": "21850467",
+    "activo": true,
+    "foto": null,
+    "area_codigo": ""
+  },
+  {
+    "numero": 2,
+    "nombre_completo": "PASACHE MEDINA, FLOR DE MARIA",
+    "sexo": "F",
+    "dni": "21835201",
+    "fecha_nacimiento": "1970-03-03 00:00:00",
+    "edad": 56,
+    "celular": "940293693",
+    "email": "flordemariapasache22@gmail.com",
+    "cargo": "COORD. PEDAGÓGICO DE CIENCIAS",
+    "area": "CYT / EPT",
+    "jornada": "40",
+    "condicion": "NOMBRADO",
+    "escala": "IV",
+    "anos_servicio": "35",
+    "direccion": "",
+    "seccion": "COORDINADORES",
+    "rol": "coordinador_cyt",
+    "usuario": "FLOR PASACHE MEDINA",
+    "contrasena": "21835201",
+    "activo": true,
+    "foto": null,
+    "area_codigo": ""
+  },
+  {
+    "numero": 3,
+    "nombre_completo": "RAMOS QUISPE, LUIS ALBERTO",
+    "sexo": "M",
+    "dni": "21868710",
+    "fecha_nacimiento": "1974-08-10 00:00:00",
+    "edad": 52,
+    "celular": "956909887",
+    "email": "alfa2005luis@gmail.com",
+    "cargo": "COORD. PEDAGÓGICO DE MATEMÁTICA",
+    "area": "MATEMÁTICA / ED. FISICA",
+    "jornada": "32",
+    "condicion": "NOMBRADO",
+    "escala": "VII",
+    "anos_servicio": "22",
+    "direccion": "AV. AMERICA 283 - Chicnha Alta",
+    "seccion": "COORDINADORES",
+    "rol": "coordinador_matematica",
+    "usuario": "LUIS RAMOS QUISPE",
+    "contrasena": "21868710",
+    "activo": true,
+    "foto": null,
+    "area_codigo": ""
+  },
+  {
+    "numero": 4,
+    "nombre_completo": "TASAYCO TASAYCO, JOSE EDUARDO",
+    "sexo": "M",
+    "dni": "40793925",
+    "fecha_nacimiento": "1980-07-24 00:00:00",
+    "edad": 46,
+    "celular": "951080297",
+    "email": "jtasaycotasayco@gmail.com",
+    "cargo": "COORD. TUTORÍA Y CONVIVENCIA",
+    "area": "TUTORIA Y CONVIVENCIA",
+    "jornada": "32",
+    "condicion": "NOMBRADO",
+    "escala": "IV",
+    "anos_servicio": "",
+    "direccion": "CALLE EL SAUCE 310 -GROCIO PRADO",
+    "seccion": "COORDINADORES",
+    "rol": "coordinador_tutoria",
+    "usuario": "JOSE TASAYCO TASAYCO",
+    "contrasena": "40793925",
+    "activo": true,
+    "foto": null,
+    "area_codigo": ""
+  },
+  {
+    "numero": 5,
+    "nombre_completo": "YLLESCAS RIOS, BENIGNA YNES",
+    "sexo": "F",
+    "dni": "21461393",
+    "fecha_nacimiento": "1968-02-18 00:00:00",
+    "edad": 58,
+    "celular": "956977254",
+    "email": "inesyllescasrios@gmail.com",
+    "cargo": "COORDINADORA DE LETRAS",
+    "area": "COMUNICACIÓN",
+    "jornada": "32",
+    "condicion": "REUBICADA",
+    "escala": "I",
+    "anos_servicio": "",
+    "direccion": "Urb. El Sauce Mz. A - Lote 11 - Sunampe",
+    "seccion": "COORDINADORES",
+    "rol": "coordinador_comunicacion",
+    "usuario": "BENIGNA YLLESCAS RIOS",
+    "contrasena": "21461393",
+    "activo": true,
+    "foto": null,
+    "area_codigo": ""
+  },
+  {
+    "numero": 1,
+    "nombre_completo": "ALMEYDA ESTEBAN, ANA MARIA",
+    "sexo": "F",
+    "dni": "40753258",
+    "fecha_nacimiento": "1980-12-02 00:00:00",
+    "edad": 46,
+    "celular": "933815652",
+    "email": "anamariaalmeydaesteban@gmail.com",
+    "cargo": "DOCENTE POR HORAS",
+    "area": "DPCC",
+    "jornada": "30",
+    "condicion": "REUBICADA",
+    "escala": "II",
+    "anos_servicio": "",
+    "direccion": "Av. Fátima N° 211 - Sunampe",
+    "seccion": "DOCENTES_NOMBRADOS",
+    "rol": "docente",
+    "usuario": "ALMEYDA ESTEBAN, ANA MARIA",
+    "contrasena": "40753258",
+    "activo": true,
+    "foto": null,
+    "area_codigo": "DPCC"
+  },
+  {
+    "numero": 2,
+    "nombre_completo": "AQUIJE GUZMAN, RICHARD ANTHONY",
+    "sexo": "M",
+    "dni": "42363032",
+    "fecha_nacimiento": "1984-03-31 00:00:00",
+    "edad": 42,
+    "celular": "917847604",
+    "email": "anthonyguzman1984.@gmail.com",
+    "cargo": "DOCENTE POR HORAS",
+    "area": "ARTE",
+    "jornada": "30",
+    "condicion": "NOMBRADO",
+    "escala": "III",
+    "anos_servicio": "",
+    "direccion": "Panamericana Sur - Entrada Grocio Prado",
+    "seccion": "DOCENTES_NOMBRADOS",
+    "rol": "docente",
+    "usuario": "AQUIJE GUZMAN, RICHARD ANTHONY",
+    "contrasena": "42363032",
+    "activo": true,
+    "foto": null,
+    "area_codigo": "ARTE"
+  },
+  {
+    "numero": 3,
+    "nombre_completo": "ASTORAYME GALVEZ, JULY LUZ",
+    "sexo": "F",
+    "dni": "21871746",
+    "fecha_nacimiento": "1974-12-23 00:00:00",
+    "edad": 52,
+    "celular": "988340540",
+    "email": "july.lag12@gmail.com",
+    "cargo": "DOCENTE POR HORAS",
+    "area": "CYT",
+    "jornada": "30",
+    "condicion": "NOMBRADA",
+    "escala": "II",
+    "anos_servicio": "",
+    "direccion": "Urb. Fernando León de Vivero Mz. O1 Lt.12 -  Pueblo Nuevo",
+    "seccion": "DOCENTES_NOMBRADOS",
+    "rol": "docente",
+    "usuario": "ASTORAYME GALVEZ, JULY LUZ",
+    "contrasena": "21871746",
+    "activo": true,
+    "foto": null,
+    "area_codigo": "CYT"
+  },
+  {
+    "numero": 4,
+    "nombre_completo": "AVALOS SARAVIA JUAN JOSE",
+    "sexo": "M",
+    "dni": "21877673",
+    "fecha_nacimiento": "1976-03-30 00:00:00",
+    "edad": 50,
+    "celular": "957269834",
+    "email": "juanjoseavalos3003@gmail.com",
+    "cargo": "DOCENTE POR HORAS",
+    "area": "COMUNICACIÓN",
+    "jornada": "30",
+    "condicion": "REASIGNADO",
+    "escala": "I",
+    "anos_servicio": "",
+    "direccion": "Jr.  Los Martires 761 - San Isidro - Pueblo Nuevo",
+    "seccion": "DOCENTES_NOMBRADOS",
+    "rol": "docente",
+    "usuario": "AVALOS SARAVIA JUAN JOSE",
+    "contrasena": "21877673",
+    "activo": true,
+    "foto": null,
+    "area_codigo": "COMUNICACION"
+  },
+  {
+    "numero": 5,
+    "nombre_completo": "AVILES VASQUEZ, ENRIQUE FERNANDO",
+    "sexo": "M",
+    "dni": "21814329",
+    "fecha_nacimiento": "1969-04-05 00:00:00",
+    "edad": 57,
+    "celular": "955954185",
+    "email": "profavilesvasquez@gmail.com",
+    "cargo": "DOCENTE POR HORAS",
+    "area": "COMUNICACIÓN",
+    "jornada": "30",
+    "condicion": "NOMBRADO",
+    "escala": "IV",
+    "anos_servicio": "",
+    "direccion": "",
+    "seccion": "DOCENTES_NOMBRADOS",
+    "rol": "docente",
+    "usuario": "AVILES VASQUEZ, ENRIQUE FERNANDO",
+    "contrasena": "21814329",
+    "activo": true,
+    "foto": null,
+    "area_codigo": "COMUNICACION"
+  },
+  {
+    "numero": 6,
+    "nombre_completo": "CONISLLA CARDENAS, OSCAR RONNY",
+    "sexo": "M",
+    "dni": "21813265",
+    "fecha_nacimiento": "1968-05-15 00:00:00",
+    "edad": 58,
+    "celular": "952504878",
+    "email": "insaprender2001@gmail.com",
+    "cargo": "DOCENTE POR HORAS",
+    "area": "DPCC",
+    "jornada": "30",
+    "condicion": "REUBICADO",
+    "escala": "III",
+    "anos_servicio": "",
+    "direccion": "Psje. Zarumilla 199 - Chincha Alta",
+    "seccion": "DOCENTES_NOMBRADOS",
+    "rol": "docente",
+    "usuario": "CONISLLA CARDENAS, OSCAR RONNY",
+    "contrasena": "21813265",
+    "activo": true,
+    "foto": null,
+    "area_codigo": "DPCC"
+  },
+  {
+    "numero": 7,
+    "nombre_completo": "CRISOSTOMO GIRAO, LIDIA BELEN",
+    "sexo": "F",
+    "dni": "21795989",
+    "fecha_nacimiento": "1966-07-22 00:00:00",
+    "edad": 60,
+    "celular": "922858658",
+    "email": "libecrigi.220766@gmail.com",
+    "cargo": "DOCENTE POR HORAS",
+    "area": "MATEMATICA",
+    "jornada": "30",
+    "condicion": "NOMBRADA",
+    "escala": "IV",
+    "anos_servicio": "",
+    "direccion": "Mz B lote 5 UPIS Magisterial Pueblo Nuevo - Frente al estadio.",
+    "seccion": "DOCENTES_NOMBRADOS",
+    "rol": "docente",
+    "usuario": "CRISOSTOMO GIRAO, LIDIA BELEN",
+    "contrasena": "21795989",
+    "activo": true,
+    "foto": null,
+    "area_codigo": "MATEMATICA"
+  },
+  {
+    "numero": 8,
+    "nombre_completo": "DE LA CRUZ BARRIOS, MILAGROS DEL PILAR",
+    "sexo": "F",
+    "dni": "41440624",
+    "fecha_nacimiento": "1980-02-15 00:00:00",
+    "edad": 46,
+    "celular": "956575647",
+    "email": "milagritosdelpilar35@gmail.com",
+    "cargo": "DOCENTE POR HORAS",
+    "area": "C Y T",
+    "jornada": "30",
+    "condicion": "REASIGNADA",
+    "escala": "III",
+    "anos_servicio": "",
+    "direccion": "Av. Mariscal Benavides 1116 - Chincha Alta",
+    "seccion": "DOCENTES_NOMBRADOS",
+    "rol": "docente",
+    "usuario": "DE LA CRUZ BARRIOS, MILAGROS DEL PILAR",
+    "contrasena": "41440624",
+    "activo": true,
+    "foto": null,
+    "area_codigo": "CYT"
+  },
+  {
+    "numero": 9,
+    "nombre_completo": "DE LA CRUZ CARRASCO, MARIA YSABEL",
+    "sexo": "F",
+    "dni": "21854941",
+    "fecha_nacimiento": "1965-08-04 00:00:00",
+    "edad": 61,
+    "celular": "962067222",
+    "email": "mariacarrasco2010@gmail.com",
+    "cargo": "DOCENTE POR HORAS",
+    "area": "MATEMATICA",
+    "jornada": "30",
+    "condicion": "NOMBRADA",
+    "escala": "I",
+    "anos_servicio": "",
+    "direccion": "",
+    "seccion": "DOCENTES_NOMBRADOS",
+    "rol": "docente",
+    "usuario": "DE LA CRUZ CARRASCO, MARIA YSABEL",
+    "contrasena": "21854941",
+    "activo": true,
+    "foto": null,
+    "area_codigo": "MATEMATICA"
+  },
+  {
+    "numero": 10,
+    "nombre_completo": "DEL RIO MIRANDA, CESAR ORLANDO",
+    "sexo": "M",
+    "dni": "21872171",
+    "fecha_nacimiento": "1975-05-28 00:00:00",
+    "edad": 51,
+    "celular": "956171241",
+    "email": "cesarorlandod@gmail.com",
+    "cargo": "DOCENTE POR HORAS",
+    "area": "MATEMATICA",
+    "jornada": "30",
+    "condicion": "REASIGNADO",
+    "escala": "II",
+    "anos_servicio": "",
+    "direccion": "Urb. Los Viñedos Mz. B1  Lote - 6 - Grocio Prado",
+    "seccion": "DOCENTES_NOMBRADOS",
+    "rol": "docente",
+    "usuario": "DEL RIO MIRANDA, CESAR ORLANDO",
+    "contrasena": "21872171",
+    "activo": true,
+    "foto": null,
+    "area_codigo": "MATEMATICA"
+  },
+  {
+    "numero": 11,
+    "nombre_completo": "ECHEGARAY SANCHEZ, JUAN DOMINGO",
+    "sexo": "M",
+    "dni": "21854433",
+    "fecha_nacimiento": "1973-07-06 00:00:00",
+    "edad": 53,
+    "celular": "922412150",
+    "email": "jdes730706@gmail.com",
+    "cargo": "DOCENTE POR HORAS",
+    "area": "EDUCACION FISICA",
+    "jornada": "30",
+    "condicion": "NOMBRADO",
+    "escala": "III",
+    "anos_servicio": "",
+    "direccion": "Av. Melchorita 4ta Cuadra - Grocio Prado",
+    "seccion": "DOCENTES_NOMBRADOS",
+    "rol": "docente",
+    "usuario": "ECHEGARAY SANCHEZ, JUAN DOMINGO",
+    "contrasena": "21854433",
+    "activo": true,
+    "foto": null,
+    "area_codigo": "ED_FISICA"
+  },
+  {
+    "numero": 12,
+    "nombre_completo": "EUSEBIO ALFARO, EDILBERTO",
+    "sexo": "M",
+    "dni": "21854248",
+    "fecha_nacimiento": "1971-08-11 00:00:00",
+    "edad": 55,
+    "celular": "956314309",
+    "email": "edilbertoeusebio@gmail.com",
+    "cargo": "DOCENTE POR HORAS",
+    "area": "COMUNICACIÓN",
+    "jornada": "30",
+    "condicion": "NOMBRADO",
+    "escala": "IV",
+    "anos_servicio": "",
+    "direccion": "",
+    "seccion": "DOCENTES_NOMBRADOS",
+    "rol": "docente",
+    "usuario": "EUSEBIO ALFARO, EDILBERTO",
+    "contrasena": "21854248",
+    "activo": true,
+    "foto": null,
+    "area_codigo": "COMUNICACION"
+  },
+  {
+    "numero": 13,
+    "nombre_completo": "HERNANDEZ GARCIA, NADHIA ISABEL",
+    "sexo": "F",
+    "dni": "21546008",
+    "fecha_nacimiento": "1973-05-20 00:00:00",
+    "edad": 53,
+    "celular": "959386674",
+    "email": "isabel.esmeralda2018@gmail.com",
+    "cargo": "DOCENTE POR HORAS",
+    "area": "CIENCIA Y TECNOLOGÍA",
+    "jornada": "30",
+    "condicion": "NOMBRADA",
+    "escala": "I",
+    "anos_servicio": "",
+    "direccion": "Calle Jorge Chavez. No 619 - Chincha Alta",
+    "seccion": "DOCENTES_NOMBRADOS",
+    "rol": "docente",
+    "usuario": "HERNANDEZ GARCIA, NADHIA ISABEL",
+    "contrasena": "21546008",
+    "activo": true,
+    "foto": null,
+    "area_codigo": "CYT"
+  },
+  {
+    "numero": 14,
+    "nombre_completo": "HUAMÁN MACAZANA, JORGE JAVIER",
+    "sexo": "M",
+    "dni": "21522668",
+    "fecha_nacimiento": "1972-08-21 00:00:00",
+    "edad": 54,
+    "celular": "959912994",
+    "email": "jorgemacazana1@gmail.com",
+    "cargo": "DOCENTE POR HORAS",
+    "area": "CIENCIA Y TECNOLOGÍA",
+    "jornada": "30",
+    "condicion": "NOMBRADO",
+    "escala": "I",
+    "anos_servicio": "",
+    "direccion": "Av. Acomayo 192 - Ica",
+    "seccion": "DOCENTES_NOMBRADOS",
+    "rol": "docente",
+    "usuario": "HUAMÁN MACAZANA, JORGE JAVIER",
+    "contrasena": "21522668",
+    "activo": true,
+    "foto": null,
+    "area_codigo": "CYT"
+  },
+  {
+    "numero": 15,
+    "nombre_completo": "HUAPAYA MOYANO, LEONOR ELIZABET",
+    "sexo": "F",
+    "dni": "74400402",
+    "fecha_nacimiento": "1993-11-04 00:00:00",
+    "edad": 33,
+    "celular": "964387409",
+    "email": "lhuapayam@gmail.com",
+    "cargo": "DOCENTE POR HORAS",
+    "area": "CCSS",
+    "jornada": "30",
+    "condicion": "NOMBRADA",
+    "escala": "I",
+    "anos_servicio": "",
+    "direccion": "URB. FONAVI LA ANGOSTURA IV ETAPA I-8 - ICA",
+    "seccion": "DOCENTES_NOMBRADOS",
+    "rol": "docente",
+    "usuario": "HUAPAYA MOYANO, LEONOR ELIZABET",
+    "contrasena": "74400402",
+    "activo": true,
+    "foto": null,
+    "area_codigo": "CCSS"
+  },
+  {
+    "numero": 16,
+    "nombre_completo": "MUNAYCO SARAVIA, CARLOS ALBERTO",
+    "sexo": "M",
+    "dni": "43212935",
+    "fecha_nacimiento": "1985-08-28 00:00:00",
+    "edad": 41,
+    "celular": "901995552",
+    "email": "krlosms85@gmail.com",
+    "cargo": "DOCENTE POR HORAS",
+    "area": "EPT",
+    "jornada": "30",
+    "condicion": "REASIGNADO",
+    "escala": "III",
+    "anos_servicio": "",
+    "direccion": "Calle Higuerita 195 - Grocio Prado",
+    "seccion": "DOCENTES_NOMBRADOS",
+    "rol": "docente",
+    "usuario": "MUNAYCO SARAVIA, CARLOS ALBERTO",
+    "contrasena": "43212935",
+    "activo": true,
+    "foto": null,
+    "area_codigo": "EPT"
+  },
+  {
+    "numero": 17,
+    "nombre_completo": "NAPA ATUNCAR, NILTON CESAR",
+    "sexo": "M",
+    "dni": "21846013",
+    "fecha_nacimiento": "1972-02-19 00:00:00",
+    "edad": 54,
+    "celular": "950867709",
+    "email": "chinchano222@gmail.com",
+    "cargo": "DOCENTE POR HORAS",
+    "area": "DPCC",
+    "jornada": "30",
+    "condicion": "REASIGNADO",
+    "escala": "V",
+    "anos_servicio": "",
+    "direccion": "AV. ALFONSO UGARTE 144",
+    "seccion": "DOCENTES_NOMBRADOS",
+    "rol": "docente",
+    "usuario": "NAPA ATUNCAR, NILTON CESAR",
+    "contrasena": "21846013",
+    "activo": true,
+    "foto": null,
+    "area_codigo": "DPCC"
+  },
+  {
+    "numero": 18,
+    "nombre_completo": "QUIJANDRIA RAMOS, EVELYN GIANINA",
+    "sexo": "F",
+    "dni": "44421987",
+    "fecha_nacimiento": "1986-11-04 00:00:00",
+    "edad": 40,
+    "celular": "958712752",
+    "email": "eya.evelyn.escorpio@gmail.com",
+    "cargo": "DOCENTE POR HORAS",
+    "area": "EPT",
+    "jornada": "30",
+    "condicion": "NOMBRADA",
+    "escala": "I",
+    "anos_servicio": "",
+    "direccion": "Av. Luis Camino Divos P-22 - Chulpaca Pueblo Nuevo - Ica",
+    "seccion": "DOCENTES_NOMBRADOS",
+    "rol": "docente",
+    "usuario": "QUIJANDRIA RAMOS, EVELYN GIANINA",
+    "contrasena": "44421987",
+    "activo": true,
+    "foto": null,
+    "area_codigo": "EPT"
+  },
+  {
+    "numero": 19,
+    "nombre_completo": "TORRES ROJAS, ESPERANZA HILDA",
+    "sexo": "F",
+    "dni": "21851901",
+    "fecha_nacimiento": "1967-02-13 00:00:00",
+    "edad": 59,
+    "celular": "952406656",
+    "email": "769esperanza.15@gmail.com",
+    "cargo": "DOCENTE POR HORAS",
+    "area": "COMUNICACIÓN",
+    "jornada": "30",
+    "condicion": "REASIGNADA",
+    "escala": "VI",
+    "anos_servicio": "",
+    "direccion": "Calle San Alejandro 168 - Sunampe",
+    "seccion": "DOCENTES_NOMBRADOS",
+    "rol": "docente",
+    "usuario": "TORRES ROJAS, ESPERANZA HILDA",
+    "contrasena": "21851901",
+    "activo": true,
+    "foto": null,
+    "area_codigo": "COMUNICACION"
+  },
+  {
+    "numero": 20,
+    "nombre_completo": "VARGAS DEL RIO, MIGUEL ANGEL",
+    "sexo": "M",
+    "dni": "21870795",
+    "fecha_nacimiento": "1976-08-17 00:00:00",
+    "edad": 50,
+    "celular": "953294798",
+    "email": "teacher.mvd.178@gmail.com",
+    "cargo": "DOCENTE POR HORAS",
+    "area": "INGLES",
+    "jornada": "30",
+    "condicion": "NOMBRADO",
+    "escala": "III",
+    "anos_servicio": "",
+    "direccion": "Calle Antonio de Zela 178 - Chincha Alta",
+    "seccion": "DOCENTES_NOMBRADOS",
+    "rol": "docente",
+    "usuario": "VARGAS DEL RIO, MIGUEL ANGEL",
+    "contrasena": "21870795",
+    "activo": true,
+    "foto": null,
+    "area_codigo": "INGLES"
+  },
+  {
+    "numero": 21,
+    "nombre_completo": "YEREN ROJAS, GRECIA",
+    "sexo": "F",
+    "dni": "43809400",
+    "fecha_nacimiento": "1986-04-23 00:00:00",
+    "edad": 40,
+    "celular": "973679260",
+    "email": "yerenrojas@gmail.com",
+    "cargo": "DOCENTE POR HORAS",
+    "area": "INGLES",
+    "jornada": "30",
+    "condicion": "NOMBRADA",
+    "escala": "IV",
+    "anos_servicio": "",
+    "direccion": "",
+    "seccion": "DOCENTES_NOMBRADOS",
+    "rol": "docente",
+    "usuario": "YEREN ROJAS, GRECIA",
+    "contrasena": "43809400",
+    "activo": true,
+    "foto": null,
+    "area_codigo": "INGLES"
+  },
+  {
+    "numero": 22,
+    "nombre_completo": "ZAVALA VALENCIA MILAGRO ELIZABETH",
+    "sexo": "F",
+    "dni": "41234795",
+    "fecha_nacimiento": "1981-11-28 00:00:00",
+    "edad": 45,
+    "celular": "921316788",
+    "email": "milizava28@gmail.com",
+    "cargo": "DOCENTE POR HORAS",
+    "area": "DPCC",
+    "jornada": "30",
+    "condicion": "REASIGNADA",
+    "escala": "II",
+    "anos_servicio": "",
+    "direccion": "Centro Poblado Monterrico Psje Tibet 155-Sunampe",
+    "seccion": "DOCENTES_NOMBRADOS",
+    "rol": "docente",
+    "usuario": "ZAVALA VALENCIA MILAGRO ELIZABETH",
+    "contrasena": "41234795",
+    "activo": true,
+    "foto": null,
+    "area_codigo": "DPCC"
+  },
+  {
+    "numero": 1,
+    "nombre_completo": "AGUILAR VALENCIA, CYNTHIA MARIELA",
+    "sexo": "F",
+    "dni": "44817382",
+    "fecha_nacimiento": "1987-06-01 00:00:00",
+    "edad": 39,
+    "celular": "934409899",
+    "email": "cynthiacomp36@gmail.com",
+    "cargo": "DOCENTE POR HORAS",
+    "area": "EPT",
+    "jornada": "19",
+    "condicion": "",
+    "escala": "",
+    "anos_servicio": "",
+    "direccion": "Barrio San Martin N°  455- SUNAMPE",
+    "seccion": "DOCENTES_CONTRATADOS",
+    "rol": "docente",
+    "usuario": "AGUILAR VALENCIA, CYNTHIA MARIELA",
+    "contrasena": "44817382",
+    "activo": true,
+    "foto": null,
+    "area_codigo": "EPT"
+  },
+  {
+    "numero": 2,
+    "nombre_completo": "ALMEYDA MUNAYCO, SIHULY LISETT",
+    "sexo": "F",
+    "dni": "40742689",
+    "fecha_nacimiento": "1980-12-14 00:00:00",
+    "edad": 46,
+    "celular": "922852960",
+    "email": "sihulyalmeydam@gmail.com",
+    "cargo": "DOCENTE POR HORAS",
+    "area": "13 MAT / 06 CYT",
+    "jornada": "19",
+    "condicion": "",
+    "escala": "MAMÁ",
+    "anos_servicio": "",
+    "direccion": "Av. Mariscal Benavides N° 1103 Int. 3 - Chincha Alta",
+    "seccion": "DOCENTES_CONTRATADOS",
+    "rol": "docente",
+    "usuario": "ALMEYDA MUNAYCO, SIHULY LISETT",
+    "contrasena": "40742689",
+    "activo": true,
+    "foto": null,
+    "area_codigo": "CYT"
+  },
+  {
+    "numero": 3,
+    "nombre_completo": "ATUNCAR AVALOS, JESÚS ANDRES",
+    "sexo": "M",
+    "dni": "71870168",
+    "fecha_nacimiento": "1990-11-29 00:00:00",
+    "edad": 36,
+    "celular": "969112771",
+    "email": "jesusandresatuncar@gmail.com",
+    "cargo": "DOCENTE POR HORAS",
+    "area": "ED. FISICA",
+    "jornada": "24",
+    "condicion": "P",
+    "escala": "",
+    "anos_servicio": "",
+    "direccion": "Calle Jorge Chavez Mz. C Lote 17 Barrio Chacarita Chincha Alta",
+    "seccion": "DOCENTES_CONTRATADOS",
+    "rol": "docente",
+    "usuario": "ATUNCAR AVALOS, JESÚS ANDRES",
+    "contrasena": "71870168",
+    "activo": true,
+    "foto": null,
+    "area_codigo": "ED_FISICA"
+  },
+  {
+    "numero": 4,
+    "nombre_completo": "CHAVEZ LEVANO, EDINSON ANIBAL",
+    "sexo": "M",
+    "dni": "70655455",
+    "fecha_nacimiento": "1993-06-01 00:00:00",
+    "edad": 33,
+    "celular": "971319272",
+    "email": "anibalchavez1693@gmail.com",
+    "cargo": "DOCENTE POR HORAS",
+    "area": "ED. FISICA",
+    "jornada": "24",
+    "condicion": "P",
+    "escala": "",
+    "anos_servicio": "",
+    "direccion": "PSJE. MIRAFLORES 130-BARRIO SAN MARTIN SUNAMPE",
+    "seccion": "DOCENTES_CONTRATADOS",
+    "rol": "docente",
+    "usuario": "CHAVEZ LEVANO, EDINSON ANIBAL",
+    "contrasena": "70655455",
+    "activo": true,
+    "foto": null,
+    "area_codigo": "ED_FISICA"
+  },
+  {
+    "numero": 5,
+    "nombre_completo": "CHOQUEZ YATACO, EVELIN PILAR",
+    "sexo": "F",
+    "dni": "45739536",
+    "fecha_nacimiento": "1989-04-12 00:00:00",
+    "edad": 37,
+    "celular": "941934964",
+    "email": "Evipily89@gmail.com",
+    "cargo": "DOCENTE POR HORAS",
+    "area": "ARTE Y CULTURA",
+    "jornada": "18",
+    "condicion": "",
+    "escala": "",
+    "anos_servicio": "",
+    "direccion": "Pedro Moreno - Chincha Alta",
+    "seccion": "DOCENTES_CONTRATADOS",
+    "rol": "docente",
+    "usuario": "CHOQUEZ YATACO, EVELIN PILAR",
+    "contrasena": "45739536",
+    "activo": true,
+    "foto": null,
+    "area_codigo": "ARTE"
+  },
+  {
+    "numero": 6,
+    "nombre_completo": "DELGADO CRISTOBAL, ROSA YOLANDA",
+    "sexo": "F",
+    "dni": "70139799",
+    "fecha_nacimiento": "1995-03-31 00:00:00",
+    "edad": 31,
+    "celular": "924109739",
+    "email": "delgadorosa3117@gmail.com",
+    "cargo": "DOCENTE POR HORAS",
+    "area": "INGLES",
+    "jornada": "25",
+    "condicion": "",
+    "escala": "MAMÁ",
+    "anos_servicio": "",
+    "direccion": "Calle Sebastian Barranca Mz. T - Lot. 1 - AA. HH. El Salvador - Pueblo Nuevo",
+    "seccion": "DOCENTES_CONTRATADOS",
+    "rol": "docente",
+    "usuario": "DELGADO CRISTOBAL, ROSA YOLANDA",
+    "contrasena": "70139799",
+    "activo": true,
+    "foto": null,
+    "area_codigo": "INGLES"
+  },
+  {
+    "numero": 7,
+    "nombre_completo": "GARCÍA AVALOS YANET DOMINICA",
+    "sexo": "F",
+    "dni": "21870738",
+    "fecha_nacimiento": "1976-08-07 00:00:00",
+    "edad": 50,
+    "celular": "942362999",
+    "email": "yagarciaval@gmail.com",
+    "cargo": "DOCENTE POR HORAS",
+    "area": "MATEMATICA",
+    "jornada": "12",
+    "condicion": "",
+    "escala": "",
+    "anos_servicio": "",
+    "direccion": "UPIS San Agustin - al costado del cementerio - Chincha Alta",
+    "seccion": "DOCENTES_CONTRATADOS",
+    "rol": "docente",
+    "usuario": "GARCÍA AVALOS YANET DOMINICA",
+    "contrasena": "21870738",
+    "activo": true,
+    "foto": null,
+    "area_codigo": "MATEMATICA"
+  },
+  {
+    "numero": 8,
+    "nombre_completo": "GARCIA RAMOS, ANTONIA PAOLA",
+    "sexo": "F",
+    "dni": "21882751",
+    "fecha_nacimiento": "1977-06-13 00:00:00",
+    "edad": 49,
+    "celular": "910388140",
+    "email": "paolagarciaramos23@gmail.com",
+    "cargo": "DOCENTE POR HORAS",
+    "area": "ED. RELIGIOSA",
+    "jornada": "24",
+    "condicion": "",
+    "escala": "",
+    "anos_servicio": "",
+    "direccion": "Av. Paraiso 43 Lomo Largo - Sunampe",
+    "seccion": "DOCENTES_CONTRATADOS",
+    "rol": "docente",
+    "usuario": "GARCIA RAMOS, ANTONIA PAOLA",
+    "contrasena": "21882751",
+    "activo": true,
+    "foto": null,
+    "area_codigo": "RELIGION"
+  },
+  {
+    "numero": 9,
+    "nombre_completo": "HUAROTO BENDEZU, ELVIRA ROSARIO",
+    "sexo": "F",
+    "dni": "21577963",
+    "fecha_nacimiento": "1978-06-23 00:00:00",
+    "edad": 48,
+    "celular": "956950702",
+    "email": "elvicita_charito@hotmail.com",
+    "cargo": "DOCENTE POR HORAS",
+    "area": "CCSS",
+    "jornada": "12",
+    "condicion": "",
+    "escala": "",
+    "anos_servicio": "",
+    "direccion": "Psje. Santo Domigo S/N Los Molinos-  Ica",
+    "seccion": "DOCENTES_CONTRATADOS",
+    "rol": "docente",
+    "usuario": "HUAROTO BENDEZU, ELVIRA ROSARIO",
+    "contrasena": "21577963",
+    "activo": true,
+    "foto": null,
+    "area_codigo": "CCSS"
+  },
+  {
+    "numero": 10,
+    "nombre_completo": "LEÓN FLORES, EUMELIA",
+    "sexo": "F",
+    "dni": "21579805",
+    "fecha_nacimiento": "1978-05-08 00:00:00",
+    "edad": 48,
+    "celular": "904207326",
+    "email": "eumelialeon2@gmail.com",
+    "cargo": "DOCENTE POR HORAS",
+    "area": "INGLES",
+    "jornada": "25",
+    "condicion": "MAMÁ V",
+    "escala": "",
+    "anos_servicio": "",
+    "direccion": "Av. Centenario 715 Int. 9 - Chincha Alta",
+    "seccion": "DOCENTES_CONTRATADOS",
+    "rol": "docente",
+    "usuario": "LEÓN FLORES, EUMELIA",
+    "contrasena": "21579805",
+    "activo": true,
+    "foto": null,
+    "area_codigo": "INGLES"
+  },
+  {
+    "numero": 11,
+    "nombre_completo": "MAGALLANES MARTINEZ, WILMER JOAN",
+    "sexo": "M",
+    "dni": "42797290",
+    "fecha_nacimiento": "",
+    "edad": 126,
+    "celular": "947593002",
+    "email": "",
+    "cargo": "DOCENTE POR HORAS",
+    "area": "MATEMATICA",
+    "jornada": "30",
+    "condicion": "",
+    "escala": "",
+    "anos_servicio": "",
+    "direccion": "Av. Unión 173 - Pueblo Nuevo - Chincha Alta",
+    "seccion": "DOCENTES_CONTRATADOS",
+    "rol": "docente",
+    "usuario": "MAGALLANES MARTINEZ, WILMER JOAN",
+    "contrasena": "42797290",
+    "activo": true,
+    "foto": null,
+    "area_codigo": "MATEMATICA"
+  },
+  {
+    "numero": 12,
+    "nombre_completo": "MARTINEZ PALOMINO, CARMEN GLADYS",
+    "sexo": "F",
+    "dni": "40027501",
+    "fecha_nacimiento": "1978-10-08 00:00:00",
+    "edad": 48,
+    "celular": "923449499",
+    "email": "carmengladysmp@gmail.com",
+    "cargo": "DOCENTE POR HORAS",
+    "area": "24 COMUNICACIÓN/ 2 TUT",
+    "jornada": "26",
+    "condicion": "",
+    "escala": "SOLTERA",
+    "anos_servicio": "",
+    "direccion": "Av. Santa Rita 205 - Chincha Alta",
+    "seccion": "DOCENTES_CONTRATADOS",
+    "rol": "docente",
+    "usuario": "MARTINEZ PALOMINO, CARMEN GLADYS",
+    "contrasena": "40027501",
+    "activo": true,
+    "foto": null,
+    "area_codigo": "COMUNICACION"
+  },
+  {
+    "numero": 13,
+    "nombre_completo": "MEJIA MARCOS, ELVIS DUVAL",
+    "sexo": "M",
+    "dni": "40746722",
+    "fecha_nacimiento": "1980-08-27 00:00:00",
+    "edad": 46,
+    "celular": "993692015",
+    "email": "MATZSUR_ICA@HOTMAIL.COM",
+    "cargo": "DOCENTE POR HORAS",
+    "area": "MATEMATICA",
+    "jornada": "30",
+    "condicion": "",
+    "escala": "",
+    "anos_servicio": "",
+    "direccion": "Jr. Los Incas 723 - Pueblo Nuevo",
+    "seccion": "DOCENTES_CONTRATADOS",
+    "rol": "docente",
+    "usuario": "MEJIA MARCOS, ELVIS DUVAL",
+    "contrasena": "40746722",
+    "activo": true,
+    "foto": null,
+    "area_codigo": "MATEMATICA"
+  },
+  {
+    "numero": 14,
+    "nombre_completo": "MELO MUJICA, CARMELO GIOVANNI",
+    "sexo": "M",
+    "dni": "43977726",
+    "fecha_nacimiento": "1982-07-18 00:00:00",
+    "edad": 44,
+    "celular": "993116502",
+    "email": "carmelogiovannimelomujica@gmail.com",
+    "cargo": "DOCENTE POR HORAS",
+    "area": "12 EPT",
+    "jornada": "12",
+    "condicion": "",
+    "escala": "SOLTERO",
+    "anos_servicio": "",
+    "direccion": "Calle Pedro Moreno 284 - Chincha Alta",
+    "seccion": "DOCENTES_CONTRATADOS",
+    "rol": "docente",
+    "usuario": "MELO MUJICA, CARMELO GIOVANNI",
+    "contrasena": "43977726",
+    "activo": true,
+    "foto": null,
+    "area_codigo": "EPT"
+  },
+  {
+    "numero": 15,
+    "nombre_completo": "MENDOZA ZUÑIGA, FELICITA EMPERATRIZ",
+    "sexo": "F",
+    "dni": "21867328",
+    "fecha_nacimiento": "1971-03-13 00:00:00",
+    "edad": 55,
+    "celular": "936307322",
+    "email": "femperatrizm@gmail.com",
+    "cargo": "DOCENTE POR HORAS",
+    "area": "ED. RELIGIOSA",
+    "jornada": "30",
+    "condicion": "",
+    "escala": "",
+    "anos_servicio": "",
+    "direccion": "Av. Acequia Grande 344 - Sunampe",
+    "seccion": "DOCENTES_CONTRATADOS",
+    "rol": "docente",
+    "usuario": "MENDOZA ZUÑIGA, FELICITA EMPERATRIZ",
+    "contrasena": "21867328",
+    "activo": true,
+    "foto": null,
+    "area_codigo": "RELIGION"
+  },
+  {
+    "numero": 16,
+    "nombre_completo": "MONTIEL RAMOS, VANESA",
+    "sexo": "F",
+    "dni": "43176421",
+    "fecha_nacimiento": "1985-01-31 00:00:00",
+    "edad": 41,
+    "celular": "947268939",
+    "email": "kamilu.javinesa@gmail.com",
+    "cargo": "DOCENTE POR HORAS",
+    "area": "INGLES",
+    "jornada": "20",
+    "condicion": "",
+    "escala": "MAMÁ",
+    "anos_servicio": "",
+    "direccion": "Av. San Martin 1021 - Pueblo Nuevo",
+    "seccion": "DOCENTES_CONTRATADOS",
+    "rol": "docente",
+    "usuario": "MONTIEL RAMOS, VANESA",
+    "contrasena": "43176421",
+    "activo": true,
+    "foto": null,
+    "area_codigo": "INGLES"
+  },
+  {
+    "numero": 17,
+    "nombre_completo": "MOSAYHUATE MENDOZA, MARIANELLA AURORA",
+    "sexo": "F",
+    "dni": "40132916",
+    "fecha_nacimiento": "1974-04-06 00:00:00",
+    "edad": 52,
+    "celular": "934703873",
+    "email": "marianella.monsayhuate@gmail.com",
+    "cargo": "DOCENTE POR HORAS",
+    "area": "CIENCIA Y TECNOLOGIA",
+    "jornada": "30",
+    "condicion": "",
+    "escala": "",
+    "anos_servicio": "",
+    "direccion": "Av. Fermin Tanguis 150- Pisco",
+    "seccion": "DOCENTES_CONTRATADOS",
+    "rol": "docente",
+    "usuario": "MOSAYHUATE MENDOZA, MARIANELLA AURORA",
+    "contrasena": "40132916",
+    "activo": true,
+    "foto": null,
+    "area_codigo": "CYT"
+  },
+  {
+    "numero": 18,
+    "nombre_completo": "PASACHE MEDINA, JULIO CESAR",
+    "sexo": "M",
+    "dni": "43114644",
+    "fecha_nacimiento": "1985-03-31 00:00:00",
+    "edad": 41,
+    "celular": "986398381",
+    "email": "juliom.0425@gmail.com",
+    "cargo": "DOCENTE POR HORAS",
+    "area": "CCSS",
+    "jornada": "30",
+    "condicion": "",
+    "escala": "",
+    "anos_servicio": "",
+    "direccion": "Av. 28 de julio 423 - Grocio Prado",
+    "seccion": "DOCENTES_CONTRATADOS",
+    "rol": "docente",
+    "usuario": "PASACHE MEDINA, JULIO CESAR",
+    "contrasena": "43114644",
+    "activo": true,
+    "foto": null,
+    "area_codigo": "CCSS"
+  },
+  {
+    "numero": 19,
+    "nombre_completo": "PEÑALOZA TORRES, JULY VERÓNICA",
+    "sexo": "F",
+    "dni": "46778305",
+    "fecha_nacimiento": "1991-02-08 00:00:00",
+    "edad": 35,
+    "celular": "980301594",
+    "email": "juliana8291.acuario@gmail.com",
+    "cargo": "DOCENTE POR HORAS",
+    "area": "12 COMUNICACIÓN",
+    "jornada": "12",
+    "condicion": "M",
+    "escala": "",
+    "anos_servicio": "",
+    "direccion": "Calle Los Pinos 101 -San Ignacio Sunampe",
+    "seccion": "DOCENTES_CONTRATADOS",
+    "rol": "docente",
+    "usuario": "PEÑALOZA TORRES, JULY VERÓNICA",
+    "contrasena": "46778305",
+    "activo": true,
+    "foto": null,
+    "area_codigo": "COMUNICACION"
+  },
+  {
+    "numero": 20,
+    "nombre_completo": "QUISPE SALVADOR, JESSABELL",
+    "sexo": "F",
+    "dni": "45135863",
+    "fecha_nacimiento": "1988-07-06 00:00:00",
+    "edad": 38,
+    "celular": "933387293",
+    "email": "jessabellq@gmail.com",
+    "cargo": "DOCENTE POR HORAS",
+    "area": "IP",
+    "jornada": "30",
+    "condicion": "",
+    "escala": "",
+    "anos_servicio": "",
+    "direccion": "Calle Las Misioneras 389 - Sunampe",
+    "seccion": "DOCENTES_CONTRATADOS",
+    "rol": "docente",
+    "usuario": "QUISPE SALVADOR, JESSABELL",
+    "contrasena": "45135863",
+    "activo": true,
+    "foto": null,
+    "area_codigo": "CYT"
+  },
+  {
+    "numero": 21,
+    "nombre_completo": "ROSAS ROJAS, JAVIER ELMER",
+    "sexo": "M",
+    "dni": "21846225",
+    "fecha_nacimiento": "1972-06-23 00:00:00",
+    "edad": 54,
+    "celular": "956946577",
+    "email": "javierelmer2015@gmail.com",
+    "cargo": "DOCENTE POR HORAS",
+    "area": "ARTE Y CULTURA",
+    "jornada": "24",
+    "condicion": "S",
+    "escala": "",
+    "anos_servicio": "",
+    "direccion": "Calle Nazareno N° 033 - Huaca Grande - Sunamape",
+    "seccion": "DOCENTES_CONTRATADOS",
+    "rol": "docente",
+    "usuario": "ROSAS ROJAS, JAVIER ELMER",
+    "contrasena": "21846225",
+    "activo": true,
+    "foto": null,
+    "area_codigo": "ARTE"
+  },
+  {
+    "numero": 22,
+    "nombre_completo": "SANCHEZ RAMOS, LUCY JANETH",
+    "sexo": "F",
+    "dni": "10440224",
+    "fecha_nacimiento": "1976-07-27 00:00:00",
+    "edad": 50,
+    "celular": "960640675",
+    "email": "lucysramos2021@gmail.com",
+    "cargo": "DOCENTE POR HORAS",
+    "area": "CIENCIAS SOCIALES",
+    "jornada": "24",
+    "condicion": "",
+    "escala": "MAMÁ",
+    "anos_servicio": "",
+    "direccion": "Urb. Valle Alto -  Huaca Grande - Sunampe",
+    "seccion": "DOCENTES_CONTRATADOS",
+    "rol": "docente",
+    "usuario": "SANCHEZ RAMOS, LUCY JANETH",
+    "contrasena": "10440224",
+    "activo": true,
+    "foto": null,
+    "area_codigo": "CCSS"
+  },
+  {
+    "numero": 1,
+    "nombre_completo": "CAYAMPI VILCHEZ, FERMIN",
+    "sexo": "M",
+    "dni": "44404505",
+    "fecha_nacimiento": "1982-06-22 00:00:00",
+    "edad": "",
+    "celular": "971595446",
+    "email": "fcayampi22@gmail.com",
+    "cargo": "AUXILIAR DE EDUCACIÓN",
+    "area": "",
+    "jornada": "30",
+    "condicion": "CONTRATADO",
+    "escala": "",
+    "anos_servicio": "",
+    "direccion": "CC.PP. Huaca Grande - Chincha Alta",
+    "seccion": "AUX_EDUCACION",
+    "rol": "administrativo",
+    "usuario": "CAYAMPI VILCHEZ, FERMIN",
+    "contrasena": "44404505",
+    "activo": true,
+    "foto": null,
+    "area_codigo": ""
+  },
+  {
+    "numero": 2,
+    "nombre_completo": "PEÑA ROJAS, ROSARIO MILAGRITOS",
+    "sexo": "F",
+    "dni": "21851869",
+    "fecha_nacimiento": "1969-11-16 00:00:00",
+    "edad": 57,
+    "celular": "980524556",
+    "email": "milipe_catherin@hotmail.com",
+    "cargo": "AUXILIAR DE EDUCACIÓN",
+    "area": "",
+    "jornada": "30",
+    "condicion": "NOMBRADA",
+    "escala": "",
+    "anos_servicio": "",
+    "direccion": "Av. Alfoso Ugarte  S/N Sunampe. Antes del Restoran el Bosque.",
+    "seccion": "AUX_EDUCACION",
+    "rol": "administrativo",
+    "usuario": "PEÑA ROJAS, ROSARIO MILAGRITOS",
+    "contrasena": "21851869",
+    "activo": true,
+    "foto": null,
+    "area_codigo": ""
+  },
+  {
+    "numero": 1,
+    "nombre_completo": "ATUNCAR YATACO, PIO",
+    "sexo": "M",
+    "dni": "21849685",
+    "fecha_nacimiento": "1963-07-11 00:00:00",
+    "edad": 63,
+    "celular": "956020632",
+    "email": "",
+    "cargo": "PERS. DE MANTENIMIENTO",
+    "area": "Pab.AB",
+    "jornada": "40",
+    "condicion": "NOMBRADO",
+    "escala": "",
+    "anos_servicio": "",
+    "direccion": "",
+    "seccion": "PERS_ADMINISTRATIVO",
+    "rol": "administrativo",
+    "usuario": "ATUNCAR YATACO, PIO",
+    "contrasena": "21849685",
+    "activo": true,
+    "foto": null,
+    "area_codigo": ""
+  },
+  {
+    "numero": 2,
+    "nombre_completo": "ESCOBAR POMA, CAROLINA BRIGIDA",
+    "sexo": "F",
+    "dni": "70057708",
+    "fecha_nacimiento": "1988-10-28 00:00:00",
+    "edad": 38,
+    "celular": "900615958",
+    "email": "escobarpomacarolina@gmail.com",
+    "cargo": "SECRETARIA",
+    "area": "Dirección",
+    "jornada": "40",
+    "condicion": "CONTRATADA",
+    "escala": "",
+    "anos_servicio": "7",
+    "direccion": "AV. Los Virreyes 1era Cuadra - Sunampe",
+    "seccion": "PERS_ADMINISTRATIVO",
+    "rol": "administrativo",
+    "usuario": "ESCOBAR POMA, CAROLINA BRIGIDA",
+    "contrasena": "70057708",
+    "activo": true,
+    "foto": null,
+    "area_codigo": ""
+  },
+  {
+    "numero": 3,
+    "nombre_completo": "MENDOZA MATIAS, DELIA",
+    "sexo": "F",
+    "dni": "21846881",
+    "fecha_nacimiento": "1962-10-28 00:00:00",
+    "edad": 64,
+    "celular": "955502712",
+    "email": "delimen_100@hotmail.com",
+    "cargo": "AUXILIAR DE BIBLIOTECA",
+    "area": "BIBLIOTECA  TESORERÌA",
+    "jornada": "40",
+    "condicion": "NOMBRADA",
+    "escala": "",
+    "anos_servicio": "",
+    "direccion": "Av. Primavera",
+    "seccion": "PERS_ADMINISTRATIVO",
+    "rol": "administrativo",
+    "usuario": "MENDOZA MATIAS, DELIA",
+    "contrasena": "21846881",
+    "activo": true,
+    "foto": null,
+    "area_codigo": ""
+  },
+  {
+    "numero": 4,
+    "nombre_completo": "SOTELO SANCHEZ, ALBERTO DAVID",
+    "sexo": "M",
+    "dni": "21812193",
+    "fecha_nacimiento": "1968-01-24 00:00:00",
+    "edad": 58,
+    "celular": "962308380",
+    "email": "davidsotelo1968@gmail.com",
+    "cargo": "AUXILIAR DE LABORATORIO",
+    "area": "LABORATORIO DE CC",
+    "jornada": "40",
+    "condicion": "NOMBRADO",
+    "escala": "",
+    "anos_servicio": "",
+    "direccion": "Pueblo  Nuevo",
+    "seccion": "PERS_ADMINISTRATIVO",
+    "rol": "administrativo",
+    "usuario": "SOTELO SANCHEZ, ALBERTO DAVID",
+    "contrasena": "21812193",
+    "activo": true,
+    "foto": null,
+    "area_codigo": ""
+  },
+  {
+    "numero": 5,
+    "nombre_completo": "MEZA HERNANDEZ, LECCI JAVIER",
+    "sexo": "M",
+    "dni": "21850865",
+    "fecha_nacimiento": "1965-10-31 00:00:00",
+    "edad": 61,
+    "celular": "955905557",
+    "email": "",
+    "cargo": "PERS. DE MANTENIMIENTO",
+    "area": "",
+    "jornada": "40",
+    "condicion": "NOMBRADO",
+    "escala": "",
+    "anos_servicio": "",
+    "direccion": "Pje.   Begonias 110 Chincha Alta",
+    "seccion": "PERS_ADMINISTRATIVO",
+    "rol": "administrativo",
+    "usuario": "MEZA HERNANDEZ, LECCI JAVIER",
+    "contrasena": "21850865",
+    "activo": true,
+    "foto": null,
+    "area_codigo": ""
+  },
+  {
+    "numero": 6,
+    "nombre_completo": "MARCELO ANICAMA, PAULO CESAR",
+    "sexo": "M",
+    "dni": "43092615",
+    "fecha_nacimiento": "1985-05-18 00:00:00",
+    "edad": 41,
+    "celular": "969278105 - W 924899765",
+    "email": "pauucemaranic@gmail.com",
+    "cargo": "PERS. DE MANTENIMIENTO",
+    "area": "",
+    "jornada": "40",
+    "condicion": "CONTRATADO",
+    "escala": "",
+    "anos_servicio": "",
+    "direccion": "Jr. Chincha 476 - Pueblo Nuevo",
+    "seccion": "PERS_ADMINISTRATIVO",
+    "rol": "administrativo",
+    "usuario": "MARCELO ANICAMA, PAULO CESAR",
+    "contrasena": "43092615",
+    "activo": true,
+    "foto": null,
+    "area_codigo": ""
+  },
+  {
+    "numero": 3,
+    "nombre_completo": "BENAVIDES TORRES, JORGE SALVADOR",
+    "sexo": "M",
+    "dni": "43400141",
+    "fecha_nacimiento": "1985-12-13 00:00:00",
+    "edad": 41,
+    "celular": "955523182",
+    "email": "",
+    "cargo": "VIGILANTE",
+    "area": "",
+    "jornada": "48",
+    "condicion": "CAS",
+    "escala": "",
+    "anos_servicio": "",
+    "direccion": "PSJE. SAN PEDRO LOTE 1  - GROCIO PRADO",
+    "seccion": "PERS_CAS",
+    "rol": "administrativo",
+    "usuario": "BENAVIDES TORRES, JORGE SALVADOR",
+    "contrasena": "43400141",
+    "activo": true,
+    "foto": null,
+    "area_codigo": ""
+  },
+  {
+    "numero": 1,
+    "nombre_completo": "ANCHANTE TORRES, MILAGROS GUADALUPE",
+    "sexo": "F",
+    "dni": "41352202",
+    "fecha_nacimiento": "1981-10-20 00:00:00",
+    "edad": 45,
+    "celular": "956343146",
+    "email": "milyabs@hotmail.com",
+    "cargo": "PSICOLOGA",
+    "area": "",
+    "jornada": "48",
+    "condicion": "CAS",
+    "escala": "",
+    "anos_servicio": "",
+    "direccion": "Calle Sucre S/N 8VA CUADRA- CHINCHA ALTA",
+    "seccion": "PERS_CAS",
+    "rol": "administrativo",
+    "usuario": "ANCHANTE TORRES, MILAGROS GUADALUPE",
+    "contrasena": "41352202",
+    "activo": true,
+    "foto": null,
+    "area_codigo": ""
+  },
+  {
+    "numero": 2,
+    "nombre_completo": "SANTIAGO AYBAR, PILAR FABIOLA",
+    "sexo": "F",
+    "dni": "21872422",
+    "fecha_nacimiento": "1975-09-28 00:00:00",
+    "edad": 51,
+    "celular": "978513824",
+    "email": "pilarfabiolas@gmail.com",
+    "cargo": "PERSONAL DE MANTENIMIENTO",
+    "area": "",
+    "jornada": "48",
+    "condicion": "CAS",
+    "escala": "",
+    "anos_servicio": "",
+    "direccion": "AV. UNIÓN 150 - PUEBLO NUEVO",
+    "seccion": "PERS_CAS",
+    "rol": "administrativo",
+    "usuario": "SANTIAGO AYBAR, PILAR FABIOLA",
+    "contrasena": "21872422",
+    "activo": true,
+    "foto": null,
+    "area_codigo": ""
+  },
+  {
+    "numero": 4,
+    "nombre_completo": "ROMERO CRUZ, CARLOS ELEODORO",
+    "sexo": "M",
+    "dni": "70602726",
+    "fecha_nacimiento": "1990-01-15 00:00:00",
+    "edad": 36,
+    "celular": "941914751",
+    "email": "eleodororc1990@gmail.com",
+    "cargo": "CIST",
+    "area": "",
+    "jornada": "48",
+    "condicion": "CAS",
+    "escala": "",
+    "anos_servicio": "",
+    "direccion": "PROLONGACIÓN ALVA MAURTUA 504 - CHINCHA ALTA",
+    "seccion": "PERS_CAS",
+    "rol": "administrativo",
+    "usuario": "ROMERO CRUZ, CARLOS ELEODORO",
+    "contrasena": "70602726",
+    "activo": true,
+    "foto": null,
+    "area_codigo": ""
+  },
+  {
+    "numero": 1,
+    "nombre_completo": "SOPORTE TÉCNICO",
+    "sexo": "",
+    "dni": "00000000",
+    "fecha_nacimiento": "",
+    "edad": "",
+    "celular": "",
+    "email": "",
+    "cargo": "SOPORTE TÉCNICO",
+    "area": "SOPORTE",
+    "jornada": "",
+    "condicion": "",
+    "escala": "",
+    "anos_servicio": "",
+    "direccion": "",
+    "seccion": "SOPORTE",
+    "rol": "soporte",
+    "usuario": "Soporte",
+    "contrasena": "soporte123",
+    "activo": true,
+    "foto": null,
+    "area_codigo": ""
+  }
+]
+</script>
+<script id="config-data-script" type="application/json">
+{
+  "nombre_institucion": "I.E. JEC Simón Bolívar",
+  "codigo_modular": "0275693",
+  "codigo_local": "216321",
+  "anio": "2026",
+  "colores": {
+    "primario": "#800020",
+    "secundario": "#A0293D",
+    "acento": "#C9808F"
+  },
+  "coordination_areas": {
+    "coordinador_ccss": ["CCSS", "DPCC", "RELIGION"],
+    "coordinador_cyt": ["CYT", "EPT"],
+    "coordinador_matematica": ["MATEMATICA", "ED_FISICA"],
+    "coordinador_comunicacion": ["COMUNICACION", "ARTE", "INGLES"],
+    "coordinador_tutoria": ["TUTORIA", "CONVIVENCIA", "PSICOLOGIA"]
+  },
+  "_coordination_areas_nota": "Estos son códigos canónicos (area_codigo) calculados a partir de la columna 'ÁREA' del Excel de personal. No se deben usar acá los textos libres del Excel (con tildes/abreviaturas variadas): cada docente ya trae su area_codigo normalizado en personal.json. Códigos válidos: CCSS, DPCC, RELIGION, CYT, EPT, MATEMATICA, ED_FISICA, COMUNICACION, ARTE, INGLES, TUTORIA, CONVIVENCIA, PSICOLOGIA.",
+  "area_labels": {
+    "coordinador_ccss": "Ciencias Sociales, DPCC y Religión",
+    "coordinador_cyt": "Ciencia y Tecnología / EPT",
+    "coordinador_matematica": "Matemática y Educación Física",
+    "coordinador_comunicacion": "Comunicación, Arte e Inglés",
+    "coordinador_tutoria": "Tutoría, Convivencia y Psicología",
+    "direccion": "Dirección",
+    "subdireccion": "Subdirección",
+    "administrativo": "Personal Administrativo",
+    "soporte": "Soporte Técnico"
+  },
+  "criterios_default": [
+    { "id": "c1", "nombre": "Planificación Curricular", "max": 20 },
+    { "id": "c2", "nombre": "Ejecución Curricular", "max": 20 },
+    { "id": "c3", "nombre": "Gestión del Aprendizaje", "max": 20 },
+    { "id": "c4", "nombre": "Compromiso Institucional", "max": 20 },
+    { "id": "c5", "nombre": "Comunicación y Relaciones Interpersonales", "max": 20 }
+  ],
+  "escala_calificacion": [
+    { "min": 90, "max": 100, "label": "Excelente", "color": "#2FA84F" },
+    { "min": 70, "max": 89, "label": "Bueno", "color": "#3E8ED0" },
+    { "min": 50, "max": 69, "label": "Regular", "color": "#E0A82E" },
+    { "min": 0, "max": 49, "label": "Deficiente", "color": "#D64545" }
+  ]
+}
+
+</script>
+
+<script src="js/app.js"></script>
+</body>
+</html>

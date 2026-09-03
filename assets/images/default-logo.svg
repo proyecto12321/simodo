@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <linearGradient id="bgG" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#a53a54"/>
+      <stop offset="55%" stop-color="#800020"/>
+      <stop offset="100%" stop-color="#4d0013"/>
+    </linearGradient>
+    <linearGradient id="ringG" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f0d9a8"/>
+      <stop offset="100%" stop-color="#c9a05a"/>
+    </linearGradient>
+    <path id="arcTop" d="M 26 108 A 74 74 0 0 1 174 108"/>
+    <path id="arcBottom" d="M 40 148 A 66 66 0 0 0 160 148"/>
+  </defs>
+
+  <circle cx="100" cy="100" r="97" fill="url(#bgG)"/>
+  <circle cx="100" cy="100" r="97" fill="none" stroke="url(#ringG)" stroke-width="4"/>
+  <circle cx="100" cy="100" r="86" fill="none" stroke="url(#ringG)" stroke-width="1.5" opacity="0.75"/>
+
+  <!-- Laurel branch - left -->
+  <g fill="url(#ringG)" opacity="0.95">
+    <ellipse cx="42" cy="150" rx="9" ry="4.2" transform="rotate(-35 42 150)"/>
+    <ellipse cx="36" cy="139" rx="9" ry="4.2" transform="rotate(-50 36 139)"/>
+    <ellipse cx="32" cy="126" rx="9" ry="4.2" transform="rotate(-65 32 126)"/>
+    <ellipse cx="30" cy="112" rx="9" ry="4.2" transform="rotate(-80 30 112)"/>
+    <ellipse cx="31" cy="98"  rx="9" ry="4.2" transform="rotate(-95 31 98)"/>
+    <path d="M46 158 Q30 130 33 92" fill="none" stroke="url(#ringG)" stroke-width="2.2"/>
+  </g>
+  <!-- Laurel branch - right (mirrored) -->
+  <g fill="url(#ringG)" opacity="0.95">
+    <ellipse cx="158" cy="150" rx="9" ry="4.2" transform="rotate(35 158 150)"/>
+    <ellipse cx="164" cy="139" rx="9" ry="4.2" transform="rotate(50 164 139)"/>
+    <ellipse cx="168" cy="126" rx="9" ry="4.2" transform="rotate(65 168 126)"/>
+    <ellipse cx="170" cy="112" rx="9" ry="4.2" transform="rotate(80 170 112)"/>
+    <ellipse cx="169" cy="98"  rx="9" ry="4.2" transform="rotate(95 169 98)"/>
+    <path d="M154 158 Q170 130 167 92" fill="none" stroke="url(#ringG)" stroke-width="2.2"/>
+  </g>
+
+  <!-- Arched institution text -->
+  <text font-family="'Inter Tight','Inter',-apple-system,sans-serif" font-size="14" font-weight="800" fill="#ffffff" letter-spacing="2.5">
+    <textPath href="#arcTop" startOffset="50%" text-anchor="middle">I.E. JEC</textPath>
+  </text>
+  <text font-family="'Inter Tight','Inter',-apple-system,sans-serif" font-size="11.5" font-weight="700" fill="#f5e6c8" letter-spacing="1.4">
+    <textPath href="#arcBottom" startOffset="50%" text-anchor="middle">SIMÓN BOLÍVAR</textPath>
+  </text>
+
+  <!-- Open book -->
+  <g transform="translate(100,112)">
+    <path d="M-34,-10 Q-34,-24 -3,-19 L-3,22 Q-34,18 -34,3 Z" fill="#ffffff"/>
+    <path d="M34,-10 Q34,-24 3,-19 L3,22 Q34,18 34,3 Z" fill="#ffffff"/>
+    <path d="M-28,-13 Q-28,-19 -6,-15" fill="none" stroke="#c9a05a" stroke-width="1.4" opacity="0.7"/>
+    <path d="M-28,-6 Q-28,-11 -6,-8" fill="none" stroke="#c9a05a" stroke-width="1.4" opacity="0.7"/>
+    <path d="M28,-13 Q28,-19 6,-15" fill="none" stroke="#c9a05a" stroke-width="1.4" opacity="0.7"/>
+    <path d="M28,-6 Q28,-11 6,-8" fill="none" stroke="#c9a05a" stroke-width="1.4" opacity="0.7"/>
+    <line x1="0" y1="-19.5" x2="0" y2="22" stroke="#c9a05a" stroke-width="2"/>
+  </g>
+
+  <!-- Star above the book -->
+  <path fill="url(#ringG)" d="M100,50 L104.5,61.5 117,62.5 107.5,70.5 110.5,82.5 100,75.5 89.5,82.5 92.5,70.5 83,62.5 95.5,61.5 Z"/>
+
+  <!-- Year -->
+  <text x="100" y="176" font-family="'Inter Tight','Inter',-apple-system,sans-serif" font-size="11" font-weight="700" fill="#f5e6c8" text-anchor="middle" letter-spacing="1">2026</text>
+</svg>

@@ -1,0 +1,21 @@
+CÓMO PONER TU PROPIA INSIGNIA / LOGO INSTITUCIONAL
+===================================================
+
+1. Copia tu imagen (foto, escudo o logo) dentro de esta misma carpeta.
+2. Renómbrala exactamente como: foto1
+   (con la extensión de tu imagen, por ejemplo: foto1.png, foto1.jpg, foto1.jpeg,
+   foto1.webp o foto1.svg)
+3. Cierra y vuelve a abrir index.html en el navegador.
+
+El sistema detectará automáticamente el archivo "foto1" y lo usará como la
+insignia institucional en todo el sistema: encabezado, pantalla de inicio de
+sesión y también en los reportes que se descargan en PDF (es la misma
+imagen en todos lados).
+
+Si prefieres no usar esta carpeta, también puedes subir el logo directamente
+desde el sistema: inicia sesión como Soporte Técnico → pestaña "Institución"
+→ "Cambiar logo institucional".
+
+Si más adelante quieres volver al escudo por defecto, simplemente borra o
+renombra el archivo "foto1" de esta carpeta y usa el botón "Restaurar logo
+por defecto" dentro de Soporte Técnico → Institución.

@@ -1,0 +1,43 @@
+{
+  "nombre_institucion": "I.E. JEC Simón Bolívar",
+  "codigo_modular": "0275693",
+  "codigo_local": "216321",
+  "anio": "2026",
+  "colores": {
+    "primario": "#800020",
+    "secundario": "#A0293D",
+    "acento": "#C9808F"
+  },
+  "coordination_areas": {
+    "coordinador_ccss": ["CCSS", "DPCC", "RELIGION"],
+    "coordinador_cyt": ["CYT", "EPT"],
+    "coordinador_matematica": ["MATEMATICA", "ED_FISICA"],
+    "coordinador_comunicacion": ["COMUNICACION", "ARTE", "INGLES"],
+    "coordinador_tutoria": ["TUTORIA", "CONVIVENCIA", "PSICOLOGIA"]
+  },
+  "_coordination_areas_nota": "Estos son códigos canónicos (area_codigo) calculados a partir de la columna 'ÁREA' del Excel de personal. No se deben usar acá los textos libres del Excel (con tildes/abreviaturas variadas): cada docente ya trae su area_codigo normalizado en personal.json. Códigos válidos: CCSS, DPCC, RELIGION, CYT, EPT, MATEMATICA, ED_FISICA, COMUNICACION, ARTE, INGLES, TUTORIA, CONVIVENCIA, PSICOLOGIA.",
+  "area_labels": {
+    "coordinador_ccss": "Ciencias Sociales, DPCC y Religión",
+    "coordinador_cyt": "Ciencia y Tecnología / EPT",
+    "coordinador_matematica": "Matemática y Educación Física",
+    "coordinador_comunicacion": "Comunicación, Arte e Inglés",
+    "coordinador_tutoria": "Tutoría, Convivencia y Psicología",
+    "direccion": "Dirección",
+    "subdireccion": "Subdirección",
+    "administrativo": "Personal Administrativo",
+    "soporte": "Soporte Técnico"
+  },
+  "criterios_default": [
+    { "id": "c1", "nombre": "Planificación Curricular", "max": 20 },
+    { "id": "c2", "nombre": "Ejecución Curricular", "max": 20 },
+    { "id": "c3", "nombre": "Gestión del Aprendizaje", "max": 20 },
+    { "id": "c4", "nombre": "Compromiso Institucional", "max": 20 },
+    { "id": "c5", "nombre": "Comunicación y Relaciones Interpersonales", "max": 20 }
+  ],
+  "escala_calificacion": [
+    { "min": 90, "max": 100, "label": "Excelente", "color": "#2FA84F" },
+    { "min": 70, "max": 89, "label": "Bueno", "color": "#3E8ED0" },
+    { "min": 50, "max": 69, "label": "Regular", "color": "#E0A82E" },
+    { "min": 0, "max": 49, "label": "Deficiente", "color": "#D64545" }
+  ]
+}

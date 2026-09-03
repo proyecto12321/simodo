@@ -1,0 +1,5 @@
+{
+  "_nota": "Plantilla vacía de referencia. Las evaluaciones reales se guardan en el navegador (localStorage) al usar el sistema, bajo las claves sgi_evaluaciones_formulario1 y sgi_evaluaciones_formulario2.",
+  "evaluacionesFormulario1": [],
+  "evaluacionesFormulario2": []
+}
